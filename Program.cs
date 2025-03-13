@@ -1,7 +1,14 @@
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,29 +23,47 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/fetchdata", async () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    using (HttpClient client = new HttpClient())
+    {
+        try
+        {
+            HttpResponseMessage response = await client.GetAsync("https://climate.weensum.nl/");
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            return Results.Ok(responseBody);
+        }
+        catch (HttpRequestException e)
+        {
+            return Results.Problem($"Request error: {e.Message}");
+        }
+    }
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/senddata", async (HttpRequest request) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    using (HttpClient client = new HttpClient())
+    {
+        try
+        {
+            string requestBody;
+            using (var reader = new StreamReader(request.Body))
+            {
+                requestBody = await reader.ReadToEndAsync();
+            }
+
+            var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync("https://climate.weensum.nl/", content);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            return Results.Ok(responseBody);
+        }
+        catch (HttpRequestException e)
+        {
+            return Results.Problem($"Request error: {e.Message}");
+        }
+    }
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

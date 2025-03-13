@@ -30,4 +30,5 @@ C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindo
 C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindopdracht\CSharpAdvancedEindopdracht\obj\Debug\net8.0\CSharpAdvancedEindopdracht.pdb
 C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindopdracht\CSharpAdvancedEindopdracht\obj\Debug\net8.0\CSharpAdvancedEindopdracht.genruntimeconfig.cache
 C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindopdracht\CSharpAdvancedEindopdracht\obj\Debug\net8.0\ref\CSharpAdvancedEindopdracht.dll
+C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindopdracht\CSharpAdvancedEindopdracht\obj\Debug\net8.0\CSharpAdvancedEindopdracht.sourcelink.json
 C:\Users\Gebruiker\RiderProjects\CSharpAdvanced-Eindopdracht\CSharpAdvancedEindopdracht\CSharpAdvancedEindopdracht\obj\Debug\net8.0\CSharpAdvancedEindopdracht.csproj.CopyComplete
